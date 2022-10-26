@@ -45,6 +45,23 @@ public final class Utils {
         return points;
     }
 
+    public static Set<Cell> findSurroundings(Board board, int x, int y, Predicate<Cell> predicate) {
+        var cells = new HashSet<Cell>();
+        if (x > 0 && predicate.test(board.get(x - 1, y))) {
+            cells.add(board.get(x - 1, y));
+        }
+        if (x < board.height() - 1 && predicate.test(x + 1, y)) {
+            cells.add(board.get(x + 1, y));
+        }
+        if (y > 0 && predicate.test(board.get(x, y - 1))) {
+            cells.add(board.get(x, y - 1));
+        }
+        if (y < board.width() - 1 && predicate.test(board.get(x, y + 1))) {
+            cells.add(board.get(x, y + 1));
+        }
+        return cells;
+    }
+
     public static Set<List<Point>> findCoordinatesOfClusters(Board board, Predicate<Cell> predicate) {
         var clusters = new HashSet<List<Point>>();
 
@@ -102,5 +119,13 @@ public final class Utils {
             .flatMap(p -> findAdjacent(board, p.x, p.y, predicate).stream())
             .distinct()
             .toList();
+    }
+
+    public static Set<Cell> findSurroundings(Board board, List<Point> cluster, Predicate<Cell> predicate) {
+        var cells = new HashSet<Cell>();
+        for (var pos : cluster) {
+            cells.addAll(findSurroundings(board, pos.x, pos.y, predicate.and(cell -> !cell instanceof Cell.Ravine)));
+        }
+        return cells;
     }
 }

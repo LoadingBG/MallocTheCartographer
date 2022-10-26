@@ -58,6 +58,16 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Empty other && hasRuins == other.hasRuins;
+        }
+
+        @Override
+        public int hashCode() {
+            return 1;
+        }
+
+        @Override
         public String toString() {
             return hasRuins ? "\033[41m \033[0m" : " ";
         }
@@ -71,6 +81,16 @@ public abstract sealed class Cell {
         @Override
         public Cell withRuins(boolean hasRuins) {
             return new Forest(hasRuins);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Cell.Forest other && hasRuins == other.hasRuins;
+        }
+
+        @Override
+        public int hashCode() {
+            return 11;
         }
 
         @Override
@@ -90,6 +110,16 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Cell.Village other && hasRuins == other.hasRuins;
+        }
+
+        @Override
+        public int hashCode() {
+            return 21;
+        }
+
+        @Override
         public String toString() {
             return hasRuins ? "\033[41m⌂\033[0m" : "⌂";
         }
@@ -103,6 +133,16 @@ public abstract sealed class Cell {
         @Override
         public Cell withRuins(boolean hasRuins) {
             return new Farm(hasRuins);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Cell.Farm other && hasRuins == other.hasRuins;
+        }
+
+        @Override
+        public int hashCode() {
+            return 31;
         }
 
         @Override
@@ -122,6 +162,16 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Cell.Water other && hasRuins == other.hasRuins;
+        }
+
+        @Override
+        public int hashCode() {
+            return 41;
+        }
+
+        @Override
         public String toString() {
             return hasRuins ? "\033[41m~\033[0m" : "~";
         }
@@ -135,6 +185,16 @@ public abstract sealed class Cell {
         @Override
         public Cell withRuins(boolean hasRuins) {
             return new Monster(hasRuins);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Cell.Monster other && hasRuins == other.hasRuins;
+        }
+
+        @Override
+        public int hashCode() {
+            return 51;
         }
 
         @Override
@@ -154,6 +214,16 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Cell.Ravine other;
+        }
+
+        @Override
+        public int hashCode() {
+            return 61;
+        }
+
+        @Override
         public String toString() {
             return "⬛";
         }
@@ -170,6 +240,16 @@ public abstract sealed class Cell {
         @Override
         public Cell withRuins(boolean hasRuins) {
             return this;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return obj instanceof Cell.Mountain other && hasCoin == other.hasCoin;
+        }
+
+        @Override
+        public int hashCode() {
+            return 71;
         }
 
         public boolean hasCoin() {

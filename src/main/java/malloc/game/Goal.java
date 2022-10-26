@@ -126,4 +126,25 @@ public interface Goal {
 
         return stars;
     };
+
+    Goal SHORESIDE_EXPANSE = board -> {
+        var waterCount = Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Water)
+            .stream()
+            .filter(cluster -> cluster.stream().noneMatch(cell -> cell.x == 0 || cell.x == board.height() - 1 || cell.y == 0 || cell.y == board.width() - 1))
+            .filter(cluster -> Utils.countAdjacent(board, cluster, cell -> cell instanceof Cell.Farm) == 0)
+            .count();
+        var farmCount = Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Farm)
+            .stream()
+            .filter(cluster -> cluster.stream().noneMatch(cell -> cell.x == 0 || cell.x == board.height() - 1 || cell.y == 0 || cell.y == board.width() - 1))
+            .filter(cluster -> Utils.countAdjacent(board, cluster, cell -> cell instanceof Cell.Water) == 0)
+            .count();
+
+        return (waterCount + farmCount) * 3;
+    };
+
+    Goal WILDHOLDS = board -> Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
+        .stream()
+        .mapToInt(List::size)
+        .filter(s -> s >= 6)
+        .count() * 8;
 }
