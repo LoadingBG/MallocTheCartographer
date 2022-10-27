@@ -31,7 +31,7 @@ public class Board {
         });
     }
 
-    private Cell[][] cells;
+    private final Cell[][] cells;
     private int coins = 0;
 
     public Board(Cell[][] cells) {

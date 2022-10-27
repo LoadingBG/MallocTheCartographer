@@ -215,7 +215,7 @@ public abstract sealed class Cell {
 
         @Override
         public boolean equals(Object obj) {
-            return obj instanceof Cell.Ravine other;
+            return obj instanceof Cell.Ravine;
         }
 
         @Override

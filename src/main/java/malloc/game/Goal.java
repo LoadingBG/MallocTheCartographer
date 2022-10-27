@@ -148,4 +148,95 @@ public interface Goal {
         .mapToInt(List::size)
         .filter(s -> s >= 6)
         .count() * 8;
+
+    Goal GREENHOLD_PLAINS = board -> {
+        var stars = 0;
+
+        var clusters = Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village);
+        for (var cluster : clusters) {
+            var surroundings = Utils.findSurroundings(board, cluster, cell -> !(cell instanceof Cell.Village));
+            if (surroundings.size() >= 3) {
+                stars += 3;
+            }
+        }
+
+        return stars;
+    };
+
+    Goal GREAT_CITY = board -> Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
+        .stream()
+        .filter(cluster -> !Utils.findSurroundings(board, cluster, cell -> !(cell instanceof Cell.Village)).contains(Cell.mountain()))
+        .mapToInt(List::size)
+        .max()
+        .orElse(0);
+
+    Goal SHIELDGATE = board -> Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
+        .stream()
+        .mapToInt(List::size)
+        .sorted()
+        .skip(1)
+        .findFirst()
+        .orElse(0);
+
+    Goal BORDERLANDS = board -> {
+        var stars = 0;
+
+        outer1:
+        for (var i = 0; i < board.height(); ++i) {
+            for (var j = 0; j < board.width(); ++j) {
+                if (board.get(i, j) instanceof Cell.Empty) {
+                    continue outer1;
+                }
+            }
+            stars += 6;
+        }
+
+        outer2:
+        for (var j = 0; j < board.width(); ++j) {
+            for (var i = 0; i < board.height(); ++i) {
+                if (board.get(i, j) instanceof Cell.Empty) {
+                    continue outer2;
+                }
+            }
+            stars += 6;
+        }
+
+        return stars;
+    };
+
+    Goal THE_BROKEN_ROAD = board -> {
+        throw new UnsupportedOperationException("TODO: 3 stars for each diagonal touching left and bottom edges of map");
+    };
+
+    Goal LOST_BARONY = board -> {
+        throw new UnsupportedOperationException("TODO: 3 stars for each space along the edge of the largest filled square");
+    };
+
+    Goal THE_CAULDRONS = board -> {
+        var stars = 0;
+
+        for (var i = 0; i < board.height(); ++i) {
+            for (var j = 0; j < board.width(); ++j) {
+                if (board.get(i, j) instanceof Cell.Empty && Utils.isSurrounded(board, i, j)) {
+                    ++stars;
+                }
+            }
+        }
+
+        return stars;
+    };
+
+    Goal ENEMIES = board -> {
+        var spaces = new HashSet<Point>();
+
+        for (var i = 0; i < board.height(); ++i) {
+            for (var j = 0; j < board.width(); ++j) {
+                if (board.get(i, j) instanceof Cell.Monster) {
+                    spaces.addAll(Utils.findAdjacent(board, i, j, cell -> cell instanceof Cell.Empty));
+                }
+            }
+        }
+
+        return -spaces.size();
+    };
 }
