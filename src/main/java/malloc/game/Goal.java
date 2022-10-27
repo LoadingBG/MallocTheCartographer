@@ -205,11 +205,42 @@ public interface Goal {
     };
 
     Goal THE_BROKEN_ROAD = board -> {
-        throw new UnsupportedOperationException("TODO: 3 stars for each diagonal touching left and bottom edges of map");
+        var stars = 0;
+        
+        var offset = Math.max(0, board.height() - board.width());
+        outer:
+        for (var i = offset; i < board.height(); ++i) {
+            for (var delta = 0; delta < board.height() - i; ++delta) {
+                if (board.get(i + delta, delta) instanceof Cell.Empty) {
+                    continue outer;
+                }
+            }
+            stars += 3;
+        }
+        
+        return stars;
     };
 
     Goal LOST_BARONY = board -> {
-        throw new UnsupportedOperationException("TODO: 3 stars for each space along the edge of the largest filled square");
+        var max = 0;
+
+        outer:
+        for (var i = 0; i < board.height(); ++i) {
+            for (var j = 0; j < board.width(); ++j) {
+                var di = 0;
+                while (!(board.get(i + di, j) instanceof Cell.Empty)) {
+                    ++di;
+                }
+                var dj = 0;
+                while (!(board.get(i, j + dj) instanceof Cell.Empty)) {
+                    ++dj;
+                }
+
+                max = Math.max(max, Math.min(di, dj));
+            }
+        }
+
+        return max * 3;
     };
 
     Goal THE_CAULDRONS = board -> {
