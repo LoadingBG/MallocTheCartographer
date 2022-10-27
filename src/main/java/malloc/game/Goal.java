@@ -2,6 +2,7 @@ package malloc.game;
 
 import java.awt.Point;
 import java.util.HashSet;
+import java.util.List;
 
 public interface Goal {
     int score(Board board);
@@ -139,10 +140,10 @@ public interface Goal {
             .filter(cluster -> Utils.countAdjacent(board, cluster, cell -> cell instanceof Cell.Water) == 0)
             .count();
 
-        return (waterCount + farmCount) * 3;
+        return (int) (waterCount + farmCount) * 3;
     };
 
-    Goal WILDHOLDS = board -> Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
+    Goal WILDHOLDS = board -> (int) Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
         .stream()
         .mapToInt(List::size)
         .filter(s -> s >= 6)

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public final class Utils {
     private Utils() {}
@@ -50,7 +49,7 @@ public final class Utils {
         if (x > 0 && predicate.test(board.get(x - 1, y))) {
             cells.add(board.get(x - 1, y));
         }
-        if (x < board.height() - 1 && predicate.test(x + 1, y)) {
+        if (x < board.height() - 1 && predicate.test(board.get(x + 1, y))) {
             cells.add(board.get(x + 1, y));
         }
         if (y > 0 && predicate.test(board.get(x, y - 1))) {
@@ -124,7 +123,7 @@ public final class Utils {
     public static Set<Cell> findSurroundings(Board board, List<Point> cluster, Predicate<Cell> predicate) {
         var cells = new HashSet<Cell>();
         for (var pos : cluster) {
-            cells.addAll(findSurroundings(board, pos.x, pos.y, predicate.and(cell -> !cell instanceof Cell.Ravine)));
+            cells.addAll(findSurroundings(board, pos.x, pos.y, predicate.and(cell -> !(cell instanceof Cell.Ravine))));
         }
         return cells;
     }
