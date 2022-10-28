@@ -1,7 +1,6 @@
 package malloc;
 
-import malloc.game.Board;
-import malloc.game.Piece;
+import malloc.game.*;
 
 public class Main {
     public static void main(String[] args) {

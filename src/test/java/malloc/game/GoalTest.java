@@ -1,9 +1,8 @@
 package malloc.game;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-class GoalTest {
+final class GoalTest {
     @Test
     void testSentinelWood() {
         Assertions.assertEquals(0, Goal.SENTINEL_WOOD.score(Board.plain()));

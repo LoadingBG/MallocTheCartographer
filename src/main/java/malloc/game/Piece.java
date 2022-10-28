@@ -1,7 +1,6 @@
 package malloc.game;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 public record Piece(Cell[][] cells, boolean hasCoin) {
     public static final Piece TREETOP_VILLAGE_FOREST = new Piece(new Cell[][] {

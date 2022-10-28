@@ -1,6 +1,6 @@
 package malloc.game;
 
-public class Board {
+public final class Board {
     public static Board plain() {
         return new Board(new Cell[][] {
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(), Cell.empty(),    Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(), Cell.empty() },

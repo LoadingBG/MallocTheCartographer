@@ -1,8 +1,7 @@
 package malloc.game;
 
-import java.awt.Point;
-import java.util.Comparator;
-import java.util.HashSet;
+import java.awt.*;
+import java.util.*;
 import java.util.List;
 
 public interface Goal {
