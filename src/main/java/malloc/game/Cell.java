@@ -95,7 +95,7 @@ public abstract sealed class Cell {
 
         @Override
         public String toString() {
-            return hasRuins ? "\033[41m\uD83C\uDF32\033[0m" : "\uD83C\uDF32";
+            return hasRuins ? "\033[41m⭱\033[0m" : "⭱";
         }
     }
 

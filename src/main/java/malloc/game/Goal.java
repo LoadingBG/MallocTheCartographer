@@ -271,4 +271,6 @@ public interface Goal {
 
         return -spaces.size();
     };
+
+    Goal COINS = Board::coins;
 }

@@ -1,5 +1,7 @@
 package malloc.game;
 
+import java.util.*;
+
 public final class Board {
     public static Board plain() {
         return new Board(new Cell[][] {
@@ -49,9 +51,13 @@ public final class Board {
         }
     }
 
+    public int coins() {
+        return coins;
+    }
+
     public boolean canFitPiece(Piece piece, int x, int y) {
-        for (var i = 0; i < piece.height(); ++i) {
-            for (var j = 0; j < piece.width(); ++j) {
+        for (var i = 0; i < piece.height() && i + y < cells.length; ++i) {
+            for (var j = 0; j < piece.width() && j + x < cells[i + y].length; ++j) {
                 if (piece.get(i, j) != null && !cells[i + y][j + x].isReplaceable) {
                     return false;
                 }
@@ -61,8 +67,8 @@ public final class Board {
     }
 
     public void placePiece(Piece piece, int x, int y) {
-        for (var i = 0; i < piece.height(); ++i) {
-            for (var j = 0; j < piece.width(); ++j) {
+        for (var i = 0; i < piece.height() && i + y < cells.length; ++i) {
+            for (var j = 0; j < piece.width() && j + x < cells[i + y].length; ++j) {
                 if (piece.get(i, j) != null) {
                     cells[i + y][j + x] = piece.get(i, j).withRuins(cells[i + y][j + x].hasRuins);
                 }
@@ -85,9 +91,8 @@ public final class Board {
 
     public Board copy() {
         var newCells = new Cell[cells.length][];
-        for (int i = 0; i < cells.length; ++i) {
-            newCells[i] = new Cell[cells[i].length];
-            System.arraycopy(cells, 0, newCells, 0, newCells[i].length);
+        for (var i = 0; i < cells.length; ++i) {
+            newCells[i] = Arrays.copyOf(cells[i], cells[i].length);
         }
         return new Board(newCells, coins);
     }
