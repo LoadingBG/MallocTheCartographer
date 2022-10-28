@@ -22,9 +22,9 @@ public final class Utils {
 
     public static int countAdjacent(Board board, int x, int y, Predicate<Cell> predicate) {
         return (x != 0 && predicate.test(board.get(x - 1, y)) ? 1 : 0)
-            + (x != board.height() && predicate.test(board.get(x + 1, y)) ? 1 : 0)
+            + (x != board.height() - 1 && predicate.test(board.get(x + 1, y)) ? 1 : 0)
             + (y != 0 && predicate.test(board.get(x, y - 1)) ? 1 : 0)
-            + (y != board.width() && predicate.test(board.get(x, y + 1)) ? 1 : 0);
+            + (y != board.width() - 1 && predicate.test(board.get(x, y + 1)) ? 1 : 0);
     }
 
     public static List<Point> findAdjacent(Board board, int x, int y, Predicate<Cell> predicate) {
@@ -32,13 +32,13 @@ public final class Utils {
         if (x != 0 && predicate.test(board.get(x - 1, y))) {
             points.add(new Point(x - 1, y));
         }
-        if (x != board.height() && predicate.test(board.get(x + 1, y))) {
+        if (x != board.height() - 1 && predicate.test(board.get(x + 1, y))) {
             points.add(new Point(x + 1, y));
         }
         if (y != 0 && predicate.test(board.get(x, y - 1))) {
             points.add(new Point(x, y - 1));
         }
-        if (y != board.width() && predicate.test(board.get(x, y + 1))) {
+        if (y != board.width() - 1 && predicate.test(board.get(x, y + 1))) {
             points.add(new Point(x, y + 1));
         }
         return points;
@@ -76,7 +76,7 @@ public final class Utils {
     }
 
     private static List<Point> findCluster(Board board, int x, int y, Predicate<Cell> predicate) {
-        var visited = new PriorityQueue<>(Comparator.<Point>comparingInt(p -> p.x).thenComparingInt(p -> p.y));
+        var visited = new HashSet<Point>();
 
         var stack = new ArrayDeque<Point>();
         stack.push(new Point(x, y));
@@ -106,7 +106,7 @@ public final class Utils {
             }
         }
 
-        return visited.stream().toList();
+        return visited.stream().sorted(Comparator.<Point>comparingInt(p -> p.x).thenComparingInt(p -> p.y)).toList();
     }
 
     public static int countAdjacent(Board board, List<Point> cluster, Predicate<Cell> predicate) {

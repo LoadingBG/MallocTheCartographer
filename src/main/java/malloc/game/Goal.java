@@ -1,6 +1,7 @@
 package malloc.game;
 
 import java.awt.Point;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface Goal {
             if (board.get(0, i) instanceof Cell.Forest) {
                 ++stars;
             }
-            if (board.get(board.height() - 1, board.width()) instanceof Cell.Forest) {
+            if (board.get(board.height() - 1, i) instanceof Cell.Forest) {
                 ++stars;
             }
         }
@@ -145,11 +146,12 @@ public interface Goal {
 
     Goal WILDHOLDS = board -> (int) Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
         .stream()
+        .peek(System.out::println)
         .mapToInt(List::size)
         .filter(s -> s >= 6)
         .count() * 8;
 
-    Goal GREENHOLD_PLAINS = board -> {
+    Goal GREENGOLD_PLAINS = board -> {
         var stars = 0;
 
         var clusters = Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village);
@@ -172,11 +174,11 @@ public interface Goal {
 
     Goal SHIELDGATE = board -> Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
         .stream()
-        .mapToInt(List::size)
-        .sorted()
+        .map(List::size)
+        .sorted(Comparator.<Integer>naturalOrder().reversed())
         .skip(1)
         .findFirst()
-        .orElse(0);
+        .orElse(0) * 2;
 
     Goal BORDERLANDS = board -> {
         var stars = 0;
@@ -224,15 +226,14 @@ public interface Goal {
     Goal LOST_BARONY = board -> {
         var max = 0;
 
-        outer:
         for (var i = 0; i < board.height(); ++i) {
             for (var j = 0; j < board.width(); ++j) {
                 var di = 0;
-                while (!(board.get(i + di, j) instanceof Cell.Empty)) {
+                while (i + di < board.height() && !(board.get(i + di, j) instanceof Cell.Empty || board.get(i + di, j) instanceof Cell.Ravine)) {
                     ++di;
                 }
                 var dj = 0;
-                while (!(board.get(i, j + dj) instanceof Cell.Empty)) {
+                while (j + dj < board.width() && !(board.get(i, j + dj) instanceof Cell.Empty || board.get(i, j + dj) instanceof Cell.Ravine)) {
                     ++dj;
                 }
 
