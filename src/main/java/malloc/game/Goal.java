@@ -224,20 +224,21 @@ public interface Goal {
     };
 
     Goal LOST_BARONY = board -> {
+        var squareSizes = new int[board.height()][board.width()];
+
         var max = 0;
 
         for (var i = 0; i < board.height(); ++i) {
             for (var j = 0; j < board.width(); ++j) {
-                var di = 0;
-                while (i + di < board.height() && !(board.get(i + di, j) instanceof Cell.Empty || board.get(i + di, j) instanceof Cell.Ravine)) {
-                    ++di;
+                if (board.get(i, j) instanceof Cell.Empty || board.get(i, j) instanceof Cell.Ravine) {
+                    squareSizes[i][j] = 0;
+                    continue;
                 }
-                var dj = 0;
-                while (j + dj < board.width() && !(board.get(i, j + dj) instanceof Cell.Empty || board.get(i, j + dj) instanceof Cell.Ravine)) {
-                    ++dj;
-                }
-
-                max = Math.max(max, Math.min(di, dj));
+                var up = i == 0 ? 0 : squareSizes[i - 1][j];
+                var left = j == 0 ? 0 : squareSizes[i][j - 1];
+                var diag = i == 0 || j == 0 ? 0 : squareSizes[i - 1][j - 1];
+                squareSizes[i][j] = Math.min(up, Math.min(left, diag)) + 1;
+                max = Math.max(squareSizes[i][j], max);
             }
         }
 
