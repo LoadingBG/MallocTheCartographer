@@ -145,7 +145,6 @@ public interface Goal {
 
     Goal WILDHOLDS = board -> (int) Utils.findCoordinatesOfClusters(board, cell -> cell instanceof Cell.Village)
         .stream()
-        .peek(System.out::println)
         .mapToInt(List::size)
         .filter(s -> s >= 6)
         .count() * 8;

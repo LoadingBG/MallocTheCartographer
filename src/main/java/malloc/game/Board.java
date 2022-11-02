@@ -20,8 +20,10 @@ public final class Board {
     }
     public static Board ravineMiddle() {
         return new Board(new Cell[][] {
+
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(),  Cell.empty(),    Cell.empty(),  Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty() },
-            { Cell.empty(), Cell.empty(), Cell.ruins(),    Cell.mountain(), Cell.empty(),  Cell.empty(),    Cell.ruins(),  Cell.empty(), Cell.mountain(), Cell.empty(),    Cell.empty() },
+            { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(),  Cell.empty(),    Cell.ruins(),  Cell.empty(), Cell.mountain(), Cell.empty(),    Cell.empty() },
+            { Cell.empty(), Cell.empty(), Cell.ruins(),    Cell.mountain(), Cell.empty(),  Cell.empty(),    Cell.empty(),  Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty() },
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(),  Cell.ravine(),   Cell.empty(),  Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty() },
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.ravine(), Cell.ravine(),   Cell.ruins(),  Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty() },
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.ravine(), Cell.ravine(),   Cell.ravine(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty() },

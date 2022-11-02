@@ -1,4 +1,4 @@
-package malloc;
+package malloc.game;
 
 import java.util.*;
 
@@ -23,11 +23,13 @@ public final class Bot {
         this.goalD = goalD;
 
         activeSeason = 0;
+        activeGoals = new Goal[] {};
         switchSeason();
         score = 0;
     }
 
     public void map(Piece[] pieces) {
+        // TODO: rotate and flip pieces
         Piece best = null;
         int bestX = -1;
         int bestY = -1;
