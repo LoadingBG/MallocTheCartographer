@@ -3,7 +3,7 @@ package malloc;
 import java.io.*;
 import java.util.*;
 
-import malloc.discord.*;
+import malloc.master.*;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.utils.cache.*;
@@ -11,8 +11,10 @@ import net.dv8tion.jda.api.utils.cache.*;
 // https://discord.com/api/oauth2/authorize?client_id=1035622851899830352&permissions=2147483648&scope=bot%20applications.commands
 public class Malloc {
     public static final DiscordCommand[] DISCORD_COMMANDS = {
-        new HelpCommand(),
+        //new HelpCommand(),
         new StartCommand(),
+        new JoinCommand(),
+        //new StopCommand(),
     };
 
     public static void main(String[] args) {
@@ -22,7 +24,8 @@ public class Malloc {
                 .setBulkDeleteSplittingEnabled(false)
                 .setActivity(Activity.competing("the mapping of the northern lands"))
                 .addEventListeners(DISCORD_COMMANDS)
-                .addEventListeners(new GuildJoinListener(), new GameHandler())
+                .addEventListeners(new GuildJoinListener(), new RoomSettingsListener(), new GameListener())
+                //.addEventListeners(new GuildJoinListener(), new GameHandler())
                 .build();
             jda.awaitReady();
             Runtime.getRuntime().addShutdownHook(new Thread(jda::shutdownNow));

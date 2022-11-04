@@ -1,10 +1,17 @@
 package malloc.game;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.*;
+
+import javax.imageio.ImageIO;
+
+import malloc.Constants;
 
 public final class Board {
     public static Board plain() {
-        return new Board(new Cell[][] {
+        return new Board("Plain", new Cell[][] {
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(), Cell.empty(),    Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(), Cell.empty() },
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.mountain(), Cell.empty(), Cell.ruins(),    Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(), Cell.empty() },
             { Cell.empty(), Cell.ruins(), Cell.empty(),    Cell.empty(),    Cell.empty(), Cell.empty(),    Cell.empty(), Cell.empty(),    Cell.mountain(), Cell.ruins(), Cell.empty() },
@@ -19,7 +26,7 @@ public final class Board {
         });
     }
     public static Board ravineMiddle() {
-        return new Board(new Cell[][] {
+        return new Board("Ravine in Middle", new Cell[][] {
 
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(),  Cell.empty(),    Cell.empty(),  Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty() },
             { Cell.empty(), Cell.empty(), Cell.empty(),    Cell.empty(),    Cell.empty(),  Cell.empty(),    Cell.ruins(),  Cell.empty(), Cell.mountain(), Cell.empty(),    Cell.empty() },
@@ -35,14 +42,20 @@ public final class Board {
         });
     }
 
+    private final String name;
     private final Cell[][] cells;
     private int coins = 0;
 
     public Board(Cell[][] cells) {
-        this.cells = cells;
+        this("", cells, 0);
     }
 
-    private Board(Cell[][] cells, int coins) {
+    public Board(String name, Cell[][] cells) {
+        this(name, cells, 0);
+    }
+
+    private Board(String name, Cell[][] cells, int coins) {
+        this.name = name;
         this.cells = cells;
         this.coins = coins;
     }
@@ -55,6 +68,10 @@ public final class Board {
 
     public int coins() {
         return coins;
+    }
+
+    public String name() {
+        return name;
     }
 
     public boolean canFitPiece(Piece piece, int x, int y) {
@@ -96,7 +113,7 @@ public final class Board {
         for (var i = 0; i < cells.length; ++i) {
             newCells[i] = Arrays.copyOf(cells[i], cells[i].length);
         }
-        return new Board(newCells, coins);
+        return new Board(name, newCells, coins);
     }
 
     public int width() {
@@ -134,5 +151,31 @@ public final class Board {
             .append("━┷".repeat(Math.max(0, cells.length - 1)))
             .append("━┛");
         return res.toString();
+    }
+
+    public byte[] toImage() {
+        final var CELL_SIZE = 110;
+
+        var image = new BufferedImage(width() * CELL_SIZE, height() * CELL_SIZE, BufferedImage.TYPE_INT_RGB);
+        var graphics = image.createGraphics();
+
+        for (var i = 0; i < height(); ++i) {
+            for (var j = 0; j < width(); ++j) {
+                var tileImage = switch (cells[i][j]) {
+                    case Cell.Empty c -> c.hasRuins ? Constants.EMPTY_RUINS : Constants.EMPTY;
+                    case Cell.Forest c -> c.hasRuins ? Constants.FOREST_RUINS : Constants.FOREST;
+                    default -> Constants.BORDER;
+                };
+                graphics.drawImage(tileImage, j * CELL_SIZE, i * CELL_SIZE, null);
+            }
+        }
+
+        var bytes = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "png", bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return bytes.toByteArray();
     }
 }

@@ -128,7 +128,7 @@ public record Piece(Cell[][] cells, Piece replacement, boolean hasCoin) {
         { Cell.monster(), Cell.monster(), Cell.monster() },
         { null,           Cell.monster(), null           },
     }, RIFT_LANDS_MONSTER, false);
-    private static final Piece DRAGON_INFERNO = new Piece(new Cell[][] {
+    public static final Piece DRAGON_INFERNO = new Piece(new Cell[][] {
         { null,           null,           Cell.monster() },
         { Cell.monster(), Cell.monster(), Cell.monster() },
         { Cell.monster(), null,           null           },
