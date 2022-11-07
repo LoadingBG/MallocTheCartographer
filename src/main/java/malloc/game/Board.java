@@ -173,6 +173,12 @@ public final class Board {
 
         for (var i = 0; i < height(); ++i) {
             for (var j = 0; j < width(); ++j) {
+//                var tileImage = Constants.BORDER;
+//                if (cells[i][j] instanceof Cell.Empty c) {
+//                    tileImage = c.hasRuins ? Constants.EMPTY_RUINS : Constants.EMPTY;
+//                } else if (cells[i][j] instanceof Cell.Forest c) {
+//                    tileImage = c.hasRuins ? Constants.FOREST_RUINS : Constants.FOREST;
+//                }
                 var tileImage = switch (cells[i][j]) {
                     case Cell.Empty c -> c.hasRuins ? Constants.EMPTY_RUINS : Constants.EMPTY;
                     case Cell.Forest c -> c.hasRuins ? Constants.FOREST_RUINS : Constants.FOREST;
