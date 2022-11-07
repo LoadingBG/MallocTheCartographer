@@ -38,17 +38,17 @@ public final class Bot {
         for (var piece : pieces) {
             for (var i = 0; i < board.height(); ++i) {
                 for (var j = 0; j < board.width(); ++j) {
-                    if (board.canFitPiece(piece, i, j)) {
-                        var copy = board.copy();
-                        copy.placePiece(piece, i, j);
-                        var placementScore = Arrays.stream(activeGoals).mapToInt(g -> g.score(copy)).sum();
-                        if (bestScore < placementScore) {
-                            bestScore = placementScore;
-                            best = piece;
-                            bestX = i;
-                            bestY = j;
-                        }
-                    }
+//                    if (board.canFitPiece(piece, i, j)) {
+//                        var copy = board.copy();
+//                        copy.placePiece(piece, i, j);
+//                        var placementScore = Arrays.stream(activeGoals).mapToInt(g -> g.score(copy)).sum();
+//                        if (bestScore < placementScore) {
+//                            bestScore = placementScore;
+//                            best = piece;
+//                            bestX = i;
+//                            bestY = j;
+//                        }
+//                    }
                 }
             }
         }
@@ -67,16 +67,16 @@ public final class Bot {
 
         for (var i = 0; i < board.height(); ++i) {
             for (var j = 0; j < board.width(); ++j) {
-                if (board.canFitPiece(enemy, i, j)) {
-                    var copy = board.copy();
-                    copy.placePiece(enemy, i, j);
-                    var placementScore = Arrays.stream(activeGoals).mapToInt(g -> -g.score(copy)).sum();
-                    if (bestScore < placementScore) {
-                        bestScore = placementScore;
-                        bestX = i;
-                        bestY = j;
-                    }
-                }
+//                if (board.canFitPiece(enemy, i, j)) {
+//                    var copy = board.copy();
+//                    copy.placePiece(enemy, i, j);
+//                    var placementScore = Arrays.stream(activeGoals).mapToInt(g -> -g.score(copy)).sum();
+//                    if (bestScore < placementScore) {
+//                        bestScore = placementScore;
+//                        bestX = i;
+//                        bestY = j;
+//                    }
+//                }
             }
         }
 

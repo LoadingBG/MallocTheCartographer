@@ -1,13 +1,12 @@
 package malloc.game;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.awt.image.*;
+import java.io.*;
 import java.util.*;
 
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 
-import malloc.Constants;
+import malloc.*;
 
 public final class Board {
     public static Board plain() {
@@ -60,10 +59,8 @@ public final class Board {
         this.coins = coins;
     }
 
-    private void addCoin() {
-        if (coins < 10) {
-            ++coins;
-        }
+    private void addCoins(final int coins) {
+        this.coins = Math.min(this.coins + coins, 10);
     }
 
     public int coins() {
@@ -74,15 +71,22 @@ public final class Board {
         return name;
     }
 
-    public boolean canFitPiece(Piece piece, int x, int y) {
+    public boolean canFitPiece(Piece piece, int x, int y, boolean ruins) {
+        boolean foundRuins = false;
         for (var i = 0; i < piece.height() && i + y < cells.length; ++i) {
             for (var j = 0; j < piece.width() && j + x < cells[i + y].length; ++j) {
-                if (piece.get(i, j) != null && !cells[i + y][j + x].isReplaceable) {
+                if (piece.get(i, j) == null) {
+                    continue;
+                }
+                if (!cells[i + y][j + x].isReplaceable) {
                     return false;
+                }
+                if (cells[i + y][j + x].hasRuins) {
+                    foundRuins = true;
                 }
             }
         }
-        return true;
+        return !ruins || foundRuins;
     }
 
     public void placePiece(Piece piece, int x, int y) {
@@ -95,14 +99,14 @@ public final class Board {
         }
 
         if (piece.hasCoin()) {
-            addCoin();
+            addCoins(1);
         }
 
         for (var i = 0; i < cells.length; ++i) {
             for (var j = 0; j < cells[i].length; ++j) {
                 if (cells[i][j] instanceof Cell.Mountain m && m.hasCoin() && Utils.isSurrounded(this, i, j)) {
                     m.collectCoin();
-                    addCoin();
+                    addCoins(1);
                 }
             }
         }
@@ -153,10 +157,18 @@ public final class Board {
         return res.toString();
     }
 
-    public byte[] toImage() {
-        final var CELL_SIZE = 110;
+    public byte[] toImageBytes() {
+        var bytes = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(toImage(), "png", bytes);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return bytes.toByteArray();
+    }
 
-        var image = new BufferedImage(width() * CELL_SIZE, height() * CELL_SIZE, BufferedImage.TYPE_INT_RGB);
+    public BufferedImage toImage() {
+        var image = new BufferedImage(width() * Constants.IMAGE_SIZE, height() * Constants.IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
         var graphics = image.createGraphics();
 
         for (var i = 0; i < height(); ++i) {
@@ -166,16 +178,10 @@ public final class Board {
                     case Cell.Forest c -> c.hasRuins ? Constants.FOREST_RUINS : Constants.FOREST;
                     default -> Constants.BORDER;
                 };
-                graphics.drawImage(tileImage, j * CELL_SIZE, i * CELL_SIZE, null);
+                graphics.drawImage(tileImage, j * Constants.IMAGE_SIZE, i * Constants.IMAGE_SIZE, null);
             }
         }
 
-        var bytes = new ByteArrayOutputStream();
-        try {
-            ImageIO.write(image, "png", bytes);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return bytes.toByteArray();
+        return image;
     }
 }

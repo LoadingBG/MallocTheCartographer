@@ -8,6 +8,7 @@ import javax.imageio.*;
 public final class Constants {
     private Constants() {}
 
+    public static final int IMAGE_SIZE = 108;
     public static final Image BORDER;
     public static final Image EMPTY;
     public static final Image EMPTY_RUINS;
