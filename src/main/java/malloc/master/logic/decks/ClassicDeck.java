@@ -70,9 +70,10 @@ public class ClassicDeck implements Deck {
     ));
 
     private final List<Card> cards = new ArrayList<>();
-    private final List<Card> dealtEnemies = new ArrayList<>();
 
-    private List<Card> dealtCards = new ArrayList<>();
+    private final List<Card> dealtModifiers = new ArrayList<>();
+    private final List<Card> dealtEnemies = new ArrayList<>();
+    private Card dealtCard;
 
     @Override
     public void reset(boolean addEnemy) {
@@ -89,24 +90,32 @@ public class ClassicDeck implements Deck {
 
     @Override
     public void deal() {
-        dealtCards.clear();
+        if (!(currentCard() instanceof EnemyCard)) {
+            dealtModifiers.clear();
+        }
+
         var card = cards.remove(0);
         while (card instanceof ModifierCard) {
-            dealtCards.add(card);
+            dealtModifiers.add(card);
             card = cards.remove(0);
         }
-        dealtCards.add(card);
+        dealtCard = card;
     }
 
     public List<Card> dealtCards() {
+        var dealtCards = new ArrayList<Card>();
+        dealtCards.add(dealtCard);
+        if (!(dealtCard instanceof EnemyCard)) {
+            dealtCards.addAll(dealtModifiers);
+        }
         return dealtCards;
     }
 
     public Card currentCard() {
-        return dealtCards.stream().filter(c -> !(c instanceof ModifierCard)).findFirst().orElseThrow();
+        return dealtCard;
     }
 
     public boolean withRuins() {
-        return dealtCards.stream().anyMatch(ModifierCard.class::isInstance);
+        return !(dealtCard instanceof EnemyCard) && !dealtModifiers.isEmpty();
     }
 }

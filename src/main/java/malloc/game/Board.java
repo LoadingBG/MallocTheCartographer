@@ -70,8 +70,14 @@ public final class Board {
 
     public boolean canFitPiece(Piece piece, int x, int y, boolean ruins) {
         boolean foundRuins = false;
-        for (var i = 0; i < piece.height() && i + y < cells.length; ++i) {
-            for (var j = 0; j < piece.width() && j + x < cells[i + y].length; ++j) {
+        for (var i = 0; i < piece.height(); ++i) {
+            if (i + y >= cells.length) {
+                return false;
+            }
+            for (var j = 0; j < piece.width(); ++j) {
+                if (j + x >= cells[i + y].length) {
+                    return false;
+                }
                 if (piece.get(i, j) == null) {
                     continue;
                 }

@@ -131,10 +131,10 @@ public final class Embeds {
 
     public static List<LayoutComponent> moveComponents(final Game game, final Game.Player player) {
         var components = new ArrayList<LayoutComponent>();
-        if (game.currentCard().pieces().size() > 1) {
+        if (player.currentCard().pieces().size() > 1) {
             components.add(ActionRow.of(
                 StringSelectMenu.create(game.makeCommand("selectPiece"))
-                    .addOptions(game.currentCard().pieces().stream().map(p -> SelectOption.of(p.name(), p.id())).toList())
+                    .addOptions(player.currentCard().pieces().stream().map(p -> SelectOption.of(p.name(), p.id())).toList())
                     .setDefaultValues(player.currentPiece().id())
                     .build()
             ));

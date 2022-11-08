@@ -211,6 +211,10 @@ public final class Game {
             return currentPiece;
         }
 
+        public Deck.Card currentCard() {
+            return card;
+        }
+
         public boolean isPiecePlaceable() {
             return currentBoard.canFitPiece(currentPiece, pieceX, pieceY, withRuins);
         }
@@ -220,9 +224,10 @@ public final class Game {
         }
 
         public void setCard(final Deck.Card card, final boolean withRuins) {
-            this.card = card.hasPlaceablePiece(currentBoard, withRuins) ? card : card.withReplacedPieces();
-            this.withRuins = withRuins;
-            currentPiece = card.pieces().get(0);
+            var possibleCard = card.placeableVariant(currentBoard, withRuins);
+            this.card = possibleCard.getKey();
+            this.withRuins = possibleCard.getValue();
+            currentPiece = this.card.pieces().get(0);
             pieceX = 0;
             pieceY = 0;
         }
