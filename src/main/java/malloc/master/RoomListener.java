@@ -17,6 +17,8 @@ public final class RoomListener extends ListenerAdapter {
         var parts = event.getComponentId().split(":");
         var room = Malloc.ROOM_MANAGER.execute(parts[1], parts[2], event);
 
+        room.updateHook(event.getMember(), event.getHook());
+
         switch (parts[2]) {
             case "changeBoard" -> {
                 event.getInteraction()
@@ -61,11 +63,7 @@ public final class RoomListener extends ListenerAdapter {
                         .setComponents()
                         .queue());
 
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Utils.givePlayersTime();
 
                 GameListener.startGame(room.code());
             }

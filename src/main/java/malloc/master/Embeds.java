@@ -111,11 +111,20 @@ public final class Embeds {
             case 4 -> Color.WHITE;
             default -> throw new UnsupportedOperationException("Unreachable");
         };
-        var goals = game.activeGoalNames();
+        var goals = game.goalNames();
+        goals = switch (game.season()) {
+            case 1 -> List.of("**" + goals.get(0) + "**", "**" + goals.get(1) + "**", goals.get(2), goals.get(3));
+            case 2 -> List.of(goals.get(0), "**" + goals.get(1) + "**", "**" + goals.get(2) + "**", goals.get(3));
+            case 3 -> List.of(goals.get(0), goals.get(1), "**" + goals.get(2) + "**", "**" + goals.get(3) + "**");
+            case 4 -> List.of("**" + goals.get(0) + "**", goals.get(1), goals.get(2), "**" + goals.get(3) + "**");
+            default -> throw new UnsupportedOperationException("Unreachable");
+        };
 
         return new EmbedBuilder()
             .setTitle("Current cards: " + game.currentCards().stream().map(Deck.Card::name).collect(Collectors.joining(" + ")) + "(" + game.currentCard().turns() + " turns)")
             .setColor(color)
+            .setDescription("There are " + game.turnsLeft() + " turns left after this card.")
+            .addField("Goals:", String.join("\n", goals), false)
             .setDescription("Active goals: " + goals.get(0) + " and " + goals.get(1))
             .setImage("attachment://board.png")
             .build();
@@ -152,10 +161,20 @@ public final class Embeds {
     }
 
     public static MessageEmbed piecePlaced(final Game game, final Game.Player player) {
+        var goals = game.goalNames();
+        goals = switch (game.season()) {
+            case 1 -> List.of("**" + goals.get(0) + "**", "**" + goals.get(1) + "**", goals.get(2), goals.get(3));
+            case 2 -> List.of(goals.get(0), "**" + goals.get(1) + "**", "**" + goals.get(2) + "**", goals.get(3));
+            case 3 -> List.of(goals.get(0), goals.get(1), "**" + goals.get(2) + "**", "**" + goals.get(3) + "**");
+            case 4 -> List.of("**" + goals.get(0) + "**", goals.get(1), goals.get(2), "**" + goals.get(3) + "**");
+            default -> throw new UnsupportedOperationException("Unreachable");
+        };
+
         return new EmbedBuilder()
             .setTitle("Piece placed")
             .setColor(Color.GREEN)
             .setDescription("Waiting for " + game.countPlayersThinking() + " players to finish.")
+            .addField("Game information", "There are " + game.turnsLeft() + " turns left.\n" + String.join("\n", goals), false)
             .addField("Your board", "Coins: " + player.currentBoard().coins() + "/10", false)
             .setImage("attachment://board.png")
             .build();

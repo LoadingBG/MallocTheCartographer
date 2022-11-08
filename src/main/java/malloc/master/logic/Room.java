@@ -84,4 +84,8 @@ public final class Room {
         this.boardId = boardId;
         board = BOARDS.get(boardId);
     }
+
+    public void updateHook(final Member member, final InteractionHook hook) {
+        players.replaceAll(e -> e.getKey().equals(member) ? Map.entry(member, hook) : e);
+    }
 }

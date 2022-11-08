@@ -8,7 +8,7 @@ import java.util.function.*;
 
 import javax.imageio.*;
 
-import malloc.*;
+import malloc.Utils;
 import malloc.game.*;
 import malloc.master.logic.decks.*;
 import net.dv8tion.jda.api.entities.*;
@@ -81,8 +81,12 @@ public final class Game {
         };
     }
 
-    public List<String> activeGoalNames() {
-        return activeGoals().stream().map(Map.Entry::getValue).toList();
+    public List<String> goalNames() {
+        return List.of(goalA.getValue(), goalB.getValue(), goalC.getValue(), goalD.getValue());
+    }
+
+    public int turnsLeft() {
+        return turnsLeft;
     }
 
     public List<Deck.Card> currentCards() {
@@ -95,7 +99,6 @@ public final class Game {
 
     public void startMove() {
         deck.deal();
-        System.out.println(deck.withRuins());
         if (deck.currentCard() instanceof Deck.EnemyCard enemyCard) {
             var rotated = new ArrayList<>(players);
             Collections.rotate(rotated, enemyCard.rotateBoardsClockwise() ? 1 : -1);
@@ -155,9 +158,13 @@ public final class Game {
         return p.calculateScore(List.of(activeGoals.get(0).getKey(), activeGoals.get(1).getKey(), Goal.COINS, Goal.ENEMIES));
     }
 
+    public void updateHook(final Member member, final InteractionHook hook) {
+        players.stream().filter(p -> p.member.equals(member)).findFirst().orElseThrow().updateHook(hook);
+    }
+
     public static final class Player {
         private final Member member;
-        private final InteractionHook hook;
+        private InteractionHook hook;
         private final Board board;
         private int score;
 
@@ -182,6 +189,10 @@ public final class Game {
 
         public InteractionHook hook() {
             return hook;
+        }
+
+        public void updateHook(final InteractionHook hook) {
+            this.hook = hook;
         }
 
         public Board originalBoard() {
@@ -282,7 +293,7 @@ public final class Game {
         public int calculateScore(List<Goal> goals) {
             var seasonScore = goals.stream().mapToInt(g -> g.score(board)).sum();
             score += seasonScore;
-            return score;
+            return seasonScore;
         }
 
         public byte[] boardImageBytes() {
@@ -293,12 +304,12 @@ public final class Game {
             var image = currentBoard.toImage();
             var graphics = image.createGraphics();
             graphics.setColor(currentBoard.canFitPiece(currentPiece, pieceX, pieceY, withRuins) ? Color.GREEN : Color.RED);
-            graphics.setStroke(new BasicStroke(Constants.IMAGE_SIZE / 10f));
+            graphics.setStroke(new BasicStroke(Utils.IMAGE_SIZE / 10f));
 
             for (var j = 0; j < currentPiece.height(); ++j) {
                 for (var i = 0; i < currentPiece.width(); ++i) {
                     if (currentPiece.get(j, i) != null) {
-                        graphics.drawRect((i + pieceX) * Constants.IMAGE_SIZE, (j + pieceY) * Constants.IMAGE_SIZE, Constants.IMAGE_SIZE, Constants.IMAGE_SIZE);
+                        graphics.drawRect((i + pieceX) * Utils.IMAGE_SIZE, (j + pieceY) * Utils.IMAGE_SIZE, Utils.IMAGE_SIZE, Utils.IMAGE_SIZE);
                     }
                 }
             }

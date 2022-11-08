@@ -47,6 +47,8 @@ public abstract sealed class Cell {
 
     public abstract Cell withRuins(boolean hasRuins);
 
+    public abstract Cell copy();
+
     public static final class Empty extends Cell {
         Empty(boolean hasRuins) {
             super(true, hasRuins);
@@ -54,6 +56,11 @@ public abstract sealed class Cell {
 
         @Override
         public Cell withRuins(boolean hasRuins) {
+            return new Empty(hasRuins);
+        }
+
+        @Override
+        public Cell copy() {
             return new Empty(hasRuins);
         }
 
@@ -84,6 +91,11 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public Cell copy() {
+            return new Forest(hasRuins);
+        }
+
+        @Override
         public boolean equals(Object obj) {
             return obj instanceof Cell.Forest other && hasRuins == other.hasRuins;
         }
@@ -106,6 +118,11 @@ public abstract sealed class Cell {
 
         @Override
         public Cell withRuins(boolean hasRuins) {
+            return new Village(hasRuins);
+        }
+
+        @Override
+        public Cell copy() {
             return new Village(hasRuins);
         }
 
@@ -136,6 +153,11 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public Cell copy() {
+            return new Farm(hasRuins);
+        }
+
+        @Override
         public boolean equals(Object obj) {
             return obj instanceof Cell.Farm other && hasRuins == other.hasRuins;
         }
@@ -158,6 +180,11 @@ public abstract sealed class Cell {
 
         @Override
         public Cell withRuins(boolean hasRuins) {
+            return new Water(hasRuins);
+        }
+
+        @Override
+        public Cell copy() {
             return new Water(hasRuins);
         }
 
@@ -188,6 +215,11 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public Cell copy() {
+            return new Monster(hasRuins);
+        }
+
+        @Override
         public boolean equals(Object obj) {
             return obj instanceof Cell.Monster other && hasRuins == other.hasRuins;
         }
@@ -214,6 +246,11 @@ public abstract sealed class Cell {
         }
 
         @Override
+        public Cell copy() {
+            return new Ravine();
+        }
+
+        @Override
         public boolean equals(Object obj) {
             return obj instanceof Cell.Ravine;
         }
@@ -233,13 +270,22 @@ public abstract sealed class Cell {
         private boolean hasCoin;
 
         Mountain() {
+            this(true);
+        }
+
+        private Mountain(final boolean hasCoin) {
             super(false, false);
-            hasCoin = true;
+            this.hasCoin = hasCoin;
         }
 
         @Override
         public Cell withRuins(boolean hasRuins) {
             return this;
+        }
+
+        @Override
+        public Cell copy() {
+            return new Mountain(hasCoin);
         }
 
         @Override

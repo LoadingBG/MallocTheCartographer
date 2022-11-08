@@ -18,6 +18,8 @@ public final class GameListener extends ListenerAdapter {
         var parts = event.getComponentId().split(":");
         var game = Malloc.GAME_MANAGER.execute(parts[1], parts[2], event);
 
+        game.updateHook(event.getMember(), event.getHook());
+
         switch (parts[2]) {
             case "selectPiece", "flipHorizontal", "flipVertical", "rotateClockwise", "rotateCounterclockwise",
                 "moveLeft", "moveRight", "moveUp", "moveDown" -> {
@@ -44,11 +46,7 @@ public final class GameListener extends ListenerAdapter {
                         .queue());
 
                 if (game.countPlayersThinking() == 0) {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    Utils.givePlayersTime();
 
                     if (game.hasSeasonEnded()) {
                         if (!game.hasNextSeason()) {
@@ -57,11 +55,7 @@ public final class GameListener extends ListenerAdapter {
                         }
                         startNextSeason(game);
 
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                        Utils.givePlayersTime();
                     }
                     makeMove(game);
                 }

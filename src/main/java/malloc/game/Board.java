@@ -2,11 +2,8 @@ package malloc.game;
 
 import java.awt.image.*;
 import java.io.*;
-import java.util.*;
 
 import javax.imageio.*;
-
-import malloc.*;
 
 public final class Board {
     public static Board plain() {
@@ -104,7 +101,7 @@ public final class Board {
 
         for (var i = 0; i < cells.length; ++i) {
             for (var j = 0; j < cells[i].length; ++j) {
-                if (cells[i][j] instanceof Cell.Mountain m && m.hasCoin() && Utils.isSurrounded(this, i, j)) {
+                if (cells[i][j] instanceof Cell.Mountain m && m.hasCoin() && malloc.game.Utils.isSurrounded(this, i, j)) {
                     m.collectCoin();
                     addCoins(1);
                 }
@@ -115,7 +112,10 @@ public final class Board {
     public Board copy() {
         var newCells = new Cell[cells.length][];
         for (var i = 0; i < cells.length; ++i) {
-            newCells[i] = Arrays.copyOf(cells[i], cells[i].length);
+            newCells[i] = new Cell[cells[i].length];
+            for (var j = 0; j < cells[i].length; ++j) {
+                newCells[i][j] = cells[i][j].copy();
+            }
         }
         return new Board(name, newCells, coins);
     }
@@ -168,7 +168,7 @@ public final class Board {
     }
 
     public BufferedImage toImage() {
-        var image = new BufferedImage(width() * Constants.IMAGE_SIZE, height() * Constants.IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
+        var image = new BufferedImage(width() * malloc.Utils.IMAGE_SIZE, height() * malloc.Utils.IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
         var graphics = image.createGraphics();
 
         for (var i = 0; i < height(); ++i) {
@@ -178,13 +178,28 @@ public final class Board {
 //                    tileImage = c.hasRuins ? Constants.EMPTY_RUINS : Constants.EMPTY;
 //                } else if (cells[i][j] instanceof Cell.Forest c) {
 //                    tileImage = c.hasRuins ? Constants.FOREST_RUINS : Constants.FOREST;
+//                } else if (cells[i][j] instanceof Cell.Village c) {
+//                    tileImage = c.hasRuins ? Constants.VILLAGE_RUINS : Constants.VILLAGE;
+//                } else if (cells[i][j] instanceof Cell.Farm c) {
+//                    tileImage = c.hasRuins ? Constants.FARM_RUINS : Constants.FARM;
+//                } else if (cells[i][j] instanceof Cell.Water c) {
+//                    tileImage = c.hasRuins ? Constants.WATER_RUINS : Constants.WATER;
+//                } else if (cells[i][j] instanceof Cell.Monster c) {
+//                    tileImage = c.hasRuins ? Constants.MONSTER_RUINS : Constants.MONSTER;
+//                } else if (cells[i][j] instanceof Cell.Mountain c) {
+//                    tileImage = c.hasCoin() ? Constants.MOUNTAIN_COIN : Constants.MOUNTAIN;
 //                }
                 var tileImage = switch (cells[i][j]) {
-                    case Cell.Empty c -> c.hasRuins ? Constants.EMPTY_RUINS : Constants.EMPTY;
-                    case Cell.Forest c -> c.hasRuins ? Constants.FOREST_RUINS : Constants.FOREST;
-                    default -> Constants.BORDER;
+                    case Cell.Empty c -> c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
+                    case Cell.Forest c -> c.hasRuins ? malloc.Utils.FOREST_RUINS : malloc.Utils.FOREST;
+                    case Cell.Village c -> c.hasRuins ? malloc.Utils.VILLAGE_RUINS : malloc.Utils.VILLAGE;
+                    case Cell.Farm c -> c.hasRuins ? malloc.Utils.FARM_RUINS : malloc.Utils.FARM;
+                    case Cell.Water c -> c.hasRuins ? malloc.Utils.WATER_RUINS : malloc.Utils.WATER;
+                    case Cell.Monster c -> c.hasRuins ? malloc.Utils.MONSTER_RUINS : malloc.Utils.MONSTER;
+                    case Cell.Mountain c -> c.hasCoin() ? malloc.Utils.MOUNTAIN_COIN : malloc.Utils.MOUNTAIN;
+                    case Cell.Ravine c -> malloc.Utils.BORDER;
                 };
-                graphics.drawImage(tileImage, j * Constants.IMAGE_SIZE, i * Constants.IMAGE_SIZE, null);
+                graphics.drawImage(tileImage, j * malloc.Utils.IMAGE_SIZE, i * malloc.Utils.IMAGE_SIZE, null);
             }
         }
 
