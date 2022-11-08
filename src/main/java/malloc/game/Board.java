@@ -179,21 +179,21 @@ public final class Board {
 
         for (var i = 0; i < height(); ++i) {
             for (var j = 0; j < width(); ++j) {
-//                var tileImage = Utils.BORDER;
+//                var tileImage = malloc.Utils.BORDER;
 //                if (cells[i][j] instanceof Cell.Empty c) {
-//                    tileImage = c.hasRuins ? Utils.EMPTY_RUINS : Utils.EMPTY;
+//                    tileImage = c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
 //                } else if (cells[i][j] instanceof Cell.Forest c) {
-//                    tileImage = c.hasRuins ? Utils.FOREST_RUINS : Utils.FOREST;
+//                    tileImage = c.hasRuins ? malloc.Utils.FOREST_RUINS : malloc.Utils.FOREST;
 //                } else if (cells[i][j] instanceof Cell.Village c) {
-//                    tileImage = c.hasRuins ? Utils.VILLAGE_RUINS : Utils.VILLAGE;
+//                    tileImage = c.hasRuins ? malloc.Utils.VILLAGE_RUINS : malloc.Utils.VILLAGE;
 //                } else if (cells[i][j] instanceof Cell.Farm c) {
-//                    tileImage = c.hasRuins ? Utils.FARM_RUINS : Utils.FARM;
+//                    tileImage = c.hasRuins ? malloc.Utils.FARM_RUINS : malloc.Utils.FARM;
 //                } else if (cells[i][j] instanceof Cell.Water c) {
-//                    tileImage = c.hasRuins ? Utils.WATER_RUINS : Utils.WATER;
+//                    tileImage = c.hasRuins ? malloc.Utils.WATER_RUINS : malloc.Utils.WATER;
 //                } else if (cells[i][j] instanceof Cell.Monster c) {
-//                    tileImage = c.hasRuins ? Utils.MONSTER_RUINS : Utils.MONSTER;
+//                    tileImage = c.hasRuins ? malloc.Utils.MONSTER_RUINS : malloc.Utils.MONSTER;
 //                } else if (cells[i][j] instanceof Cell.Mountain c) {
-//                    tileImage = c.hasCoin() ? Utils.MOUNTAIN_COIN : Utils.MOUNTAIN;
+//                    tileImage = c.hasCoin() ? malloc.Utils.MOUNTAIN_COIN : malloc.Utils.MOUNTAIN;
 //                }
                 var tileImage = switch (cells[i][j]) {
                     case Cell.Empty c -> c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
