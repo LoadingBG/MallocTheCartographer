@@ -179,21 +179,21 @@ public final class Board {
 
         for (var i = 0; i < height(); ++i) {
             for (var j = 0; j < width(); ++j) {
-//                var tileImage = Constants.BORDER;
+//                var tileImage = Utils.BORDER;
 //                if (cells[i][j] instanceof Cell.Empty c) {
-//                    tileImage = c.hasRuins ? Constants.EMPTY_RUINS : Constants.EMPTY;
+//                    tileImage = c.hasRuins ? Utils.EMPTY_RUINS : Utils.EMPTY;
 //                } else if (cells[i][j] instanceof Cell.Forest c) {
-//                    tileImage = c.hasRuins ? Constants.FOREST_RUINS : Constants.FOREST;
+//                    tileImage = c.hasRuins ? Utils.FOREST_RUINS : Utils.FOREST;
 //                } else if (cells[i][j] instanceof Cell.Village c) {
-//                    tileImage = c.hasRuins ? Constants.VILLAGE_RUINS : Constants.VILLAGE;
+//                    tileImage = c.hasRuins ? Utils.VILLAGE_RUINS : Utils.VILLAGE;
 //                } else if (cells[i][j] instanceof Cell.Farm c) {
-//                    tileImage = c.hasRuins ? Constants.FARM_RUINS : Constants.FARM;
+//                    tileImage = c.hasRuins ? Utils.FARM_RUINS : Utils.FARM;
 //                } else if (cells[i][j] instanceof Cell.Water c) {
-//                    tileImage = c.hasRuins ? Constants.WATER_RUINS : Constants.WATER;
+//                    tileImage = c.hasRuins ? Utils.WATER_RUINS : Utils.WATER;
 //                } else if (cells[i][j] instanceof Cell.Monster c) {
-//                    tileImage = c.hasRuins ? Constants.MONSTER_RUINS : Constants.MONSTER;
+//                    tileImage = c.hasRuins ? Utils.MONSTER_RUINS : Utils.MONSTER;
 //                } else if (cells[i][j] instanceof Cell.Mountain c) {
-//                    tileImage = c.hasCoin() ? Constants.MOUNTAIN_COIN : Constants.MOUNTAIN;
+//                    tileImage = c.hasCoin() ? Utils.MOUNTAIN_COIN : Utils.MOUNTAIN;
 //                }
                 var tileImage = switch (cells[i][j]) {
                     case Cell.Empty c -> c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
