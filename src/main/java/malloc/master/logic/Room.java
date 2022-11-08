@@ -13,14 +13,14 @@ public final class Room {
 
     public static final Map<String, Board> BOARDS = Map.of(
         "plain", Board.plain(),
-        "ravineInMiddle", Board.ravineMiddle(),
-        "test", new Board("Test board", new Cell[][] {
-            { Cell.empty(),  Cell.empty(),  Cell.ravine(), Cell.empty(),  Cell.empty()  },
-            { Cell.empty(),  Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.empty()  },
-            { Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.ravine() },
-            { Cell.empty(),  Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.empty()  },
-            { Cell.empty(),  Cell.empty(),  Cell.ravine(), Cell.empty(),  Cell.ruins()  },
-        })
+        "ravineInMiddle", Board.ravineMiddle()
+//        "test", new Board("Test board", new Cell[][] {
+//            { Cell.empty(),  Cell.empty(),  Cell.ravine(), Cell.empty(),  Cell.empty()  },
+//            { Cell.empty(),  Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.empty()  },
+//            { Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.ravine() },
+//            { Cell.empty(),  Cell.ravine(), Cell.ravine(), Cell.ravine(), Cell.empty()  },
+//            { Cell.empty(),  Cell.empty(),  Cell.ravine(), Cell.empty(),  Cell.ruins()  },
+//        })
     );
 
     private String boardId = "plain";
@@ -63,8 +63,8 @@ public final class Room {
     public Map<String, String> boardNames() {
         return Map.of(
             "plain", "Plain",
-            "ravineInMiddle", "Ravine in Middle",
-            "test", "Test"
+            "ravineInMiddle", "Ravine in Middle"
+//            "test", "Test"
         );
     }
 
