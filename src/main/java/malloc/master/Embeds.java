@@ -125,7 +125,6 @@ public final class Embeds {
             .setColor(color)
             .setDescription("There are " + game.turnsLeft() + " turns left after this card.")
             .addField("Goals:", String.join("\n", goals), false)
-            .setDescription("Active goals: " + goals.get(0) + " and " + goals.get(1))
             .setImage("attachment://board.png")
             .build();
     }
