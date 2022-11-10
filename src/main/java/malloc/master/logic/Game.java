@@ -234,8 +234,7 @@ public final class Game {
 
         public void selectPiece(final String pieceId) {
             currentPiece = card.pieces().stream().filter(p -> p.id().equals(pieceId)).findFirst().orElseThrow();
-            pieceX = 0;
-            pieceY = 0;
+            putPieceInBounds();
         }
 
         public void movePieceRight() {

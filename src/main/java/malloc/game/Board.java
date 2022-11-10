@@ -40,7 +40,7 @@ public final class Board {
 
     private final String name;
     private final Cell[][] cells;
-    private int coins = 0;
+    private int coins;
 
     public Board(Cell[][] cells) {
         this("", cells, 0);
@@ -56,8 +56,8 @@ public final class Board {
         this.coins = coins;
     }
 
-    private void addCoins(final int coins) {
-        this.coins = Math.min(this.coins + coins, 10);
+    private void addCoin() {
+        this.coins = Math.min(this.coins + 1, 10);
     }
 
     public int coins() {
@@ -102,14 +102,14 @@ public final class Board {
         }
 
         if (piece.hasCoin()) {
-            addCoins(1);
+            addCoin();
         }
 
         for (var i = 0; i < cells.length; ++i) {
             for (var j = 0; j < cells[i].length; ++j) {
                 if (cells[i][j] instanceof Cell.Mountain m && m.hasCoin() && malloc.game.Utils.isSurrounded(this, i, j)) {
                     m.collectCoin();
-                    addCoins(1);
+                    addCoin();
                 }
             }
         }
@@ -179,32 +179,32 @@ public final class Board {
 
         for (var i = 0; i < height(); ++i) {
             for (var j = 0; j < width(); ++j) {
-//                var tileImage = malloc.Utils.BORDER;
-//                if (cells[i][j] instanceof Cell.Empty c) {
-//                    tileImage = c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
-//                } else if (cells[i][j] instanceof Cell.Forest c) {
-//                    tileImage = c.hasRuins ? malloc.Utils.FOREST_RUINS : malloc.Utils.FOREST;
-//                } else if (cells[i][j] instanceof Cell.Village c) {
-//                    tileImage = c.hasRuins ? malloc.Utils.VILLAGE_RUINS : malloc.Utils.VILLAGE;
-//                } else if (cells[i][j] instanceof Cell.Farm c) {
-//                    tileImage = c.hasRuins ? malloc.Utils.FARM_RUINS : malloc.Utils.FARM;
-//                } else if (cells[i][j] instanceof Cell.Water c) {
-//                    tileImage = c.hasRuins ? malloc.Utils.WATER_RUINS : malloc.Utils.WATER;
-//                } else if (cells[i][j] instanceof Cell.Monster c) {
-//                    tileImage = c.hasRuins ? malloc.Utils.MONSTER_RUINS : malloc.Utils.MONSTER;
-//                } else if (cells[i][j] instanceof Cell.Mountain c) {
-//                    tileImage = c.hasCoin() ? malloc.Utils.MOUNTAIN_COIN : malloc.Utils.MOUNTAIN;
-//                }
-                var tileImage = switch (cells[i][j]) {
-                    case Cell.Empty c -> c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
-                    case Cell.Forest c -> c.hasRuins ? malloc.Utils.FOREST_RUINS : malloc.Utils.FOREST;
-                    case Cell.Village c -> c.hasRuins ? malloc.Utils.VILLAGE_RUINS : malloc.Utils.VILLAGE;
-                    case Cell.Farm c -> c.hasRuins ? malloc.Utils.FARM_RUINS : malloc.Utils.FARM;
-                    case Cell.Water c -> c.hasRuins ? malloc.Utils.WATER_RUINS : malloc.Utils.WATER;
-                    case Cell.Monster c -> c.hasRuins ? malloc.Utils.MONSTER_RUINS : malloc.Utils.MONSTER;
-                    case Cell.Mountain c -> c.hasCoin() ? malloc.Utils.MOUNTAIN_COIN : malloc.Utils.MOUNTAIN;
-                    case Cell.Ravine c -> malloc.Utils.BORDER;
-                };
+                var tileImage = malloc.Utils.BORDER;
+                if (cells[i][j] instanceof Cell.Empty c) {
+                    tileImage = c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
+                } else if (cells[i][j] instanceof Cell.Forest c) {
+                    tileImage = c.hasRuins ? malloc.Utils.FOREST_RUINS : malloc.Utils.FOREST;
+                } else if (cells[i][j] instanceof Cell.Village c) {
+                    tileImage = c.hasRuins ? malloc.Utils.VILLAGE_RUINS : malloc.Utils.VILLAGE;
+                } else if (cells[i][j] instanceof Cell.Farm c) {
+                    tileImage = c.hasRuins ? malloc.Utils.FARM_RUINS : malloc.Utils.FARM;
+                } else if (cells[i][j] instanceof Cell.Water c) {
+                    tileImage = c.hasRuins ? malloc.Utils.WATER_RUINS : malloc.Utils.WATER;
+                } else if (cells[i][j] instanceof Cell.Monster c) {
+                    tileImage = c.hasRuins ? malloc.Utils.MONSTER_RUINS : malloc.Utils.MONSTER;
+                } else if (cells[i][j] instanceof Cell.Mountain c) {
+                    tileImage = c.hasCoin() ? malloc.Utils.MOUNTAIN_COIN : malloc.Utils.MOUNTAIN;
+                }
+//                var tileImage = switch (cells[i][j]) {
+//                    case Cell.Empty c -> c.hasRuins ? malloc.Utils.EMPTY_RUINS : malloc.Utils.EMPTY;
+//                    case Cell.Forest c -> c.hasRuins ? malloc.Utils.FOREST_RUINS : malloc.Utils.FOREST;
+//                    case Cell.Village c -> c.hasRuins ? malloc.Utils.VILLAGE_RUINS : malloc.Utils.VILLAGE;
+//                    case Cell.Farm c -> c.hasRuins ? malloc.Utils.FARM_RUINS : malloc.Utils.FARM;
+//                    case Cell.Water c -> c.hasRuins ? malloc.Utils.WATER_RUINS : malloc.Utils.WATER;
+//                    case Cell.Monster c -> c.hasRuins ? malloc.Utils.MONSTER_RUINS : malloc.Utils.MONSTER;
+//                    case Cell.Mountain c -> c.hasCoin() ? malloc.Utils.MOUNTAIN_COIN : malloc.Utils.MOUNTAIN;
+//                    case Cell.Ravine c -> malloc.Utils.BORDER;
+//                };
                 graphics.drawImage(tileImage, j * malloc.Utils.IMAGE_SIZE, i * malloc.Utils.IMAGE_SIZE, null);
             }
         }
