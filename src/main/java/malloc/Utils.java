@@ -5,6 +5,8 @@ import java.io.*;
 
 import javax.imageio.*;
 
+import net.dv8tion.jda.api.utils.*;
+
 public final class Utils {
     private Utils() {}
 
@@ -56,5 +58,9 @@ public final class Utils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static FileUpload cardFile(final String card) {
+        return FileUpload.fromData(Utils.class.getResourceAsStream("/images/cards/" + card + ".png"), "card.png");
     }
 }

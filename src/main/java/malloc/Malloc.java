@@ -16,7 +16,7 @@ public class Malloc {
     public static final GameManager GAME_MANAGER = new GameManager();
 
     public static final DiscordCommand[] DISCORD_COMMANDS = {
-        //new HelpCommand(),
+        new HelpCommand(),
         new StartCommand(),
         new JoinCommand(),
         //new StopCommand(),
